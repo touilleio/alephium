@@ -347,22 +347,12 @@ object AlephiumConfig {
       parseMiners(mining.minerAddresses)(broker).map { minerAddresses =>
         val consensusExtracted = consensus.toConsensusSetting(broker)
         val networkExtracted   = network.toNetworkSetting(ActorRefT.apply)
-        val discoveryRefined = if (network.networkId == NetworkId.AlephiumTestNet) {
-          discovery.copy(bootstrap =
-            ArraySeq(
-              new InetSocketAddress("v17-bootstrap0.testnet.alephium.org", 9973),
-              new InetSocketAddress("v17-bootstrap1.testnet.alephium.org", 9973)
-            )
-          )
-        } else {
-          discovery
-        }
         AlephiumConfig(
           broker,
           consensusExtracted,
           mining.toMiningSetting(minerAddresses),
           networkExtracted,
-          discoveryRefined,
+          discovery,
           mempool,
           wallet,
           node,
